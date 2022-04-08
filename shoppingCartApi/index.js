@@ -6,6 +6,8 @@ const authRoute= require('./routes/auth')
 const productRoute=require('./routes/product')
 const categoryRoute=require('./routes/category')
 const cartRoute=require('./routes/cart')
+const orderRoute=require('./routes/order')
+
 
 const cors=require('cors')
 
@@ -22,6 +24,8 @@ app.use('/user',authRoute)
 app.use('/category',categoryRoute)
 app.use('/product', productRoute)
 app.use('/cart',cartRoute)
+app.use('/order',orderRoute)
+
 
 
 app.listen(8001,()=>console.log("http://localhost:8001/user"));
