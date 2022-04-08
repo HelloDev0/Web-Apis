@@ -66,31 +66,29 @@ router.post('/',verify, upload.single('image'), async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        await Product.find({}).populate().exec((err, product) => {
-            // console.log(err,"object",product)
-            // return
-            if (err) res.status(400).send("error while fetching products !!")
+        await Product.find().populate('category').exec(
+            (err, product) => {
+            if (err) res.status(400).send(err)
             else return res.status(200).json(product)
         })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
 })
+// router.get('/search', async (req, res) => {
+//     let { query } = req.query
 
-router.get('/search', async (req, res) => {
-    let { query } = req.query
-
-    try {
-        await Product.find({name:query }).populate("category").exec((err, product) => {
-            // console.log(err,"object",product)
-            // return
-            if (err) res.status(400).send("error while fetching products !!")
-            else return res.status(200).json(product)
-        })
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
+//     try {
+//         await Product.find({name:query}).populate().exec((err, product) => {
+//             // console.log(err,"object",product)
+//             // return
+//             if (err) res.status(400).send("error while fetching products !!")
+//             else return res.status(200).json(product)
+//         })
+//     } catch (err) {
+//         res.status(500).json({ message: err.message })
+//     }
+// })
 
 
 module.exports = router;

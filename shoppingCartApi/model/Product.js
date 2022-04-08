@@ -18,7 +18,7 @@ const userSchema=new mongoose.Schema({
     },
     category:{
         type:schema.Types.ObjectId,
-        ref:"Category"
+        ref:"Category",
         
     }
 })

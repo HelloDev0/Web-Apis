@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        await Cart.find({}).populate("product").populate("user").exec((err, cart) => {
+        await Cart.find().populate("product").populate("user").exec((err, cart) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(cart)
         })
