@@ -40,5 +40,17 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
+//cart of a user
+
+router.get('/:id', async (req, res) => {
+    try {
+        await Cart.find({user:req.params.id}).populate("product").exec((err, cart) => {
+            if (err) res.status(400).send("error while fetching products !!")
+            else return res.status(200).json(cart)
+        })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 module.exports = router;

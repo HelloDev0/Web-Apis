@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
             const passwordCompare= await bcrypt.compare(password,user.password)
             console.log(user,"hjvjhghjjvbjhvbjh",passwordCompare)
             if (passwordCompare) {
-                const token = jwt.sign({ _id: User._id, email: User.email, password: User.password }, process.env.TOKEN, { expiresIn: 60 * 30 });
+                const token = jwt.sign({user}, process.env.TOKEN, { expiresIn: 60 * 30 });
                 return await res.status(200).header('auth_token', token).json({ auth_token: token });
 
             } else {

@@ -76,6 +76,34 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
+router.get('/search', async (req, res) => {
+    // console.log(`query,"object",query`,req.query)
+    let { query } = req.query
+    try {
+        await Category.find({name:query}).populate('product').exec((err, products) => {
+            // console.log(query, product)
+            // let productList=products.map((p)=>{return p.product})
+        //   let filteredData=productList.filter(name => name = query)
+          console.log("data",products)
+
+            if (err) res.status(400).send("error while fetching products !!")
+            else return res.status(200).json(products)
+        })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try {
+        await Category.findById(req.params.id).populate('product').exec((err, product) => {
+            if (err) res.status(400).send("error while fetching products !!")
+            else return res.status(200).json(product)
+        })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 // router.put('/', async (req, res) => {
 //     try {
 //         await Category.findByIdAndUpdate({}).populate("product").exec((err, product) => {

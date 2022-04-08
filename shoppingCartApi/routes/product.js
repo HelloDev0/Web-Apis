@@ -43,7 +43,8 @@ router.post('/',verify, upload.single('image'), async (req, res) => {
     try {
         let Product = await product.save();
         let category = await Category.findOne({ _id: req.body.category })
-        if (category.product.includes(Product._id)) {
+        if(category){
+            if (category.product.includes(Product._id)) {
             // console.log("not getting the data")
             return res.status(200).json(Product);
 
@@ -54,6 +55,7 @@ router.post('/',verify, upload.single('image'), async (req, res) => {
                 return res.status(200).json(Product)
             }
         }
+    }else {return res.status(400).send("sorry .something error!")}
 
     } catch (err) {
         return res.status(400).send(err)
@@ -62,11 +64,11 @@ router.post('/',verify, upload.single('image'), async (req, res) => {
 })
 
 
-router.get('/', verify, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        await Product.find({}).populate("category", {
-
-        }).exec((err, product) => {
+        await Product.find({}).populate().exec((err, product) => {
+            // console.log(err,"object",product)
+            // return
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(product)
         })
@@ -75,6 +77,20 @@ router.get('/', verify, async (req, res) => {
     }
 })
 
+router.get('/search', async (req, res) => {
+    let { query } = req.query
+
+    try {
+        await Product.find({name:query }).populate("category").exec((err, product) => {
+            // console.log(err,"object",product)
+            // return
+            if (err) res.status(400).send("error while fetching products !!")
+            else return res.status(200).json(product)
+        })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 
 module.exports = router;
