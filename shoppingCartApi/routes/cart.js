@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        await Cart.find().populate("product").populate("user").exec((err, cart) => {
+        await Cart.find({}).populate({path:"product",select:["name","price"]}).populate({path:"user",select:"name"}).exec((err, cart) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(cart)
         })
@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        await Cart.find({user:req.params.id}).populate("product").exec((err, cart) => {
+        await Cart.find({user:req.params.id}).populate({path:"product",select:"name"}).exec((err, cart) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(cart)
         })
