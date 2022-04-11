@@ -30,7 +30,7 @@ router.post('/',verify, async (req, res) => {
 //fetch all cart data route
 router.get('/',verify, async (req, res) => {
     try {
-        await Cart.find({}).populate({path:"product",select:["name","price"]}).populate({path:"user",select:"name"}).exec((err, cart) => {
+        await Cart.find({}).populate({path:"product",select:["name","price"],match: {name:"papaya"}}).populate({path:"user",select:"name"}).exec((err, cart) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(cart)
         })

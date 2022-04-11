@@ -30,8 +30,9 @@ router.get('/', async (req, res) => {
 //search category by name
 router.get('/search', async (req, res) => {
     let { query } = req.query
+    let {productName}=req.query||""
     try {
-        await Category.find({category:query}).populate({path:'product',select:['name','image','price']}).exec((err, products) => {
+        await Category.find({}).populate({path:'product',select:['name','image','price'],match:{name:productName}}).exec((err, products) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(products)
         })
