@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const { cloudinary } = require('../utils/cloudinary');
-
 const verify = require('../utils/verifyToken');
-// const Joi = require('@hapi/joi')
 const Product = require('../model/Product')
 const Category = require('../model/Category')
 const multer = require('multer');
@@ -24,10 +22,6 @@ const upload = multer({
 })
 
 
-
-
-
-
 router.post('/',verify, upload.single('image'), async (req, res) => {
 
     const image = req.file.path;
@@ -45,7 +39,6 @@ router.post('/',verify, upload.single('image'), async (req, res) => {
         let category = await Category.findOne({ _id: req.body.category })
         if(category){
             if (category.product.includes(Product._id)) {
-            // console.log("not getting the data")
             return res.status(200).json(Product);
 
         } else {
@@ -75,20 +68,5 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
-// router.get('/search', async (req, res) => {
-//     let { query } = req.query
-
-//     try {
-//         await Product.find({name:query}).populate().exec((err, product) => {
-//             // console.log(err,"object",product)
-//             // return
-//             if (err) res.status(400).send("error while fetching products !!")
-//             else return res.status(200).json(product)
-//         })
-//     } catch (err) {
-//         res.status(500).json({ message: err.message })
-//     }
-// })
-
 
 module.exports = router;

@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const Cart = require('../model/Cart')
 
+
 router.post('/', async (req, res) => {
     const cartExist = await Cart.findOne({ user: req.body.user })
     if (cartExist) {
-        // console.log("object",cartExist.product.includes(req.body.product))
         if(!cartExist.product.includes(req.body.product)){
             cartExist.product.push(req.body.product)
             let savedCart=await Cart.findByIdAndUpdate({_id: cartExist._id},cartExist)
@@ -12,10 +12,7 @@ router.post('/', async (req, res) => {
         }else{
            return res.status(300).send("something fishy ,please add another product!!")
         }
-
-        
     } else {
-        console.log("objectobjectobjectobject")
         const cart = new Cart(req.body);
         try {
             let savedCart = await cart.save();
@@ -26,10 +23,10 @@ router.post('/', async (req, res) => {
             return res.status(400).send(err)
         }
     }
-
-
 });
 
+
+//fetch all cart data route
 router.get('/', async (req, res) => {
     try {
         await Cart.find({}).populate({path:"product",select:["name","price"]}).populate({path:"user",select:"name"}).exec((err, cart) => {
@@ -40,8 +37,8 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
-//cart of a user
 
+//cart of a user
 router.get('/:id', async (req, res) => {
     try {
         await Cart.find({user:req.params.id}).populate({path:"product",select:"name"}).exec((err, cart) => {
