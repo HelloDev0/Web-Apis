@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 //fetch all category route
 router.get('/', async (req, res) => {
     try {
-        await Category.find({}).populate('product').exec((err, product) => {
+        await Category.find({}).populate({path:'product',select:['name','image','price']}).exec((err, product) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(product)
         })
@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 router.get('/search', async (req, res) => {
     let { query } = req.query
     try {
-        await Category.find({category:query}).populate('product').exec((err, products) => {
+        await Category.find({category:query}).populate({path:'product',select:['name','image','price']}).exec((err, products) => {
             if (err) res.status(400).send("error while fetching products !!")
             else return res.status(200).json(products)
         })
@@ -40,17 +40,5 @@ router.get('/search', async (req, res) => {
     }
 })
 
-
-//fetch category by id
-router.get('/:id', async (req, res) => {
-    try {
-        await Category.findById(req.params.id).populate('product').populate("").exec((err, product) => {
-            if (err) res.status(400).send("error while fetching products !!")
-            else return res.status(200).json(product)
-        })
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
 
 module.exports = router;

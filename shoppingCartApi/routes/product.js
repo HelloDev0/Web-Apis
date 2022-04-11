@@ -57,9 +57,9 @@ router.post('/',verify, upload.single('image'), async (req, res) => {
 })
 
 
-router.get('/', async (req, res) => {
+router.get('/',verify, async (req, res) => {
     try {
-        await Product.find().populate('category').exec(
+        await Product.find().populate({path:'category',select:['category']}).exec(
             (err, product) => {
             if (err) res.status(400).send(err)
             else return res.status(200).json(product)

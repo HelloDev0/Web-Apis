@@ -13,9 +13,10 @@ router.post('/', async (req, res) => {
     }
 });
 
+//getting all orders
 router.get('/', async (req, res) => {
     try {
-        await Order.find({}).populate("product").exec((err, order) => {
+        await Order.find({}).populate({path:"product",select:["name","image"]}).exec((err, order) => {
             if (err) {res.status(400).send("error while fetching products !!")}
             else {return res.status(200).json(order)}
         })
@@ -27,7 +28,7 @@ router.get('/', async (req, res) => {
 //orders of a user
 router.get('/:id', async (req, res) => {
     try {
-        await Order.find({user:req.params.id}).populate('product').exec((err, order) => {
+        await Order.find({user:req.params.id}).populate({path:"product",select:["name","image"]}).exec((err, order) => {
             if (err) {res.status(400).send("error while fetching products !!")}
             else {return res.status(200).json(order)}
         })

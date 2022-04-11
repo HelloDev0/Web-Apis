@@ -9,6 +9,5 @@ const userSchema = new mongoose.Schema({
         type: schema.Types.ObjectId, ref: "Product",
         required: true,
     }],
-    quantity:Number
 })
 module.exports = mongoose.model('Cart', userSchema);
