@@ -26,8 +26,19 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
-
-//search category by name
+//search category by name only
+router.get('/byName', async (req, res) => {
+    let {category}=req.query
+    try {
+        await Category.find({category:category}).populate({path:'product',select:['name','image','price'],}).exec((err, products) => {
+            if (err) res.status(400).send("error while fetching products !!")
+            else return res.status(200).json(products)
+        })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+//search category by product name
 router.get('/search', async (req, res) => {
     let { query } = req.query
     let {productName}=req.query||""
