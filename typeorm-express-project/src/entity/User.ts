@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Blog } from "./Blog"
 
 @Entity()
 export class User {
@@ -24,13 +25,8 @@ export class User {
     @Column()
     Password: string
 
-    @Column()
-    Subject: string
-
-    @Column()
-    Content: string
-
-    @Column()
-    Blog_Created_Date: string
-
+    @OneToMany(()=>Blog,(blog)=>blog.user,{
+        cascade:true
+    })
+    blogs: Promise<Blog[]>;
 }
