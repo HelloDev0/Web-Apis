@@ -18,9 +18,6 @@ const addUser = async (req: Request, res: Response) => {
         UserName: req.body.UserName,
         Password: req.body.Password,
         Blogs: Promise.resolve(Blog)
-        // Subject: req.body.Subject,
-        // Content: req.body.Content, 
-        // Blog_Created_Date: req.body.Blog_Created_Date
     }
     let data = await entityManager.insert(User, userData)
 
@@ -43,24 +40,32 @@ const allUser = async (req: Request, res: Response) => {
 }
 const updateUser = async (req: Request, res: Response) => {
 
-    const entityManager = getManager()
+    const entityManager = getRepository(User)
+    const { userid } = req.query
     //fetching Data
-    let data = await entityManager.findOneBy(User, {})
+    let selectedUser = await entityManager.findOneBy({ id: req.body.id })
 
+        selectedUser.FirstName = req.body.FirstName,
+        selectedUser.LastName = req.body.LastName,
+        selectedUser.MobileNo = req.body.MobileNo,
+        selectedUser.Email = req.body.Email,
+        selectedUser.UserName = req.body.UserName,
+        selectedUser.Password = req.body.Password,
+
+        await entityManager.save(selectedUser).catch(err => console.log("Error is here : " + err))
     res.json({
-        test: "ok",
-        data: data
+        message: "User ID: " + req.body.id + " updated succcessfully..",
+        data: selectedUser
     })
 }
 const deleteUser = async (req: Request, res: Response) => {
 
-    const entityManager = getManager()
-    //fetching Data
-    let data = await entityManager.find(User)
+    const entityManager = getRepository(User)
+    let selectedUser = await entityManager.findOneBy({ id: req.body.id })
+    await entityManager.remove(selectedUser).catch(err => console.log(err))
 
     res.json({
-        test: "ok",
-        data: data
+        message: "User ID: " + req.body.id + " removed succcessfully.."
     })
 }
 
@@ -89,7 +94,7 @@ const userLogin = async (req: Request, res: Response) => {
     console.log(req.params)
 
     console.log(req.oidc.isAuthenticated())
-        res.send(await req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+    res.send(await req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 }
 
 export {
