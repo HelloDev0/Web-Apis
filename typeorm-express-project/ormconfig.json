@@ -1,0 +1,19 @@
+{
+    "type":"mysql",
+    "host":"localhost",
+    "port":3306,
+    "username":"root",
+    "password":"Butu@399",
+    "database":"typeormdb",
+    "synchronize":true,
+    "logging":false,
+    "migrationTableName":"migrations",
+    "entities":["src/entity/**/*.ts"],
+    "migrations":[],
+    "subscribers":[],
+    "cli":{
+        "entitiesDir":"src/entity",
+        "migrationsDir":"src/migration",
+        "subscribersDir":"src/subscriber"
+    }
+}
