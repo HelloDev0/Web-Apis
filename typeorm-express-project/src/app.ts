@@ -6,24 +6,33 @@ import bodyParser = require("body-parser");
 import { auth } from 'express-openid-connect';
 // import {expressValidator} from "express-validator"
 // const { auth } = require('express-openid-connect');
+// import {jwt} from 'express-jwt';
+// import {jwks} from 'jwks-rsa'
+var jwt = require('express-jwt');
+var jwks = require('jwks-rsa');
 
-const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: 'a long, randomly-generated string stored in env',
-    baseURL: 'http://localhost:4001/',
-    clientID: '4kdHskWXeWOa2OOQOe8zj9Yoc01PKdNA',
-    issuerBaseURL: 'https://dev-iu1gyvsf.us.auth0.com'
-};
+var jwtCheck = jwt({
+    secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: 'https://dev-iu1gyvsf.us.auth0.com/.well-known/jwks.json'
+  }),
+  audience: 'http://localhost:4001',
+  issuer: 'https://dev-iu1gyvsf.us.auth0.com/',
+  algorithms: ['RS256']
+});
 
 const app = express()
 
 const port = 4001;
+// app.use(morgan("dev"));
+// app.use(helmet());
 app.use(bodyParser.json())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("public"))
-app.use(auth(config));
+// app.use(jwtCheck)
 
 
 app.use('/', router)

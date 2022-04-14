@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 // import { UserDetails } from "../entity/UserDetails";
-import { getManager, getRepository, } from 'typeorm'
+import { Any, getManager, getRepository, } from 'typeorm'
 import { Blog } from '../entity/Blog';
 import { User } from "../entity/User";
 import { router } from '../router/router';
@@ -10,20 +10,7 @@ import { body, check, validationResult } from "express-validator"
 
 const addUser =
     async (req: Request, res: Response) => {
-
-        //         check("FirstName","firstname should not empty!").exists(),
-        //         check("Email","please enter a valid email").isEmail()
-        //         // console.log("data",body("FirstName").notEmpty)
-        //         // body("FirstName").notEmpty,
-        //         //     body("Email").isEmail().normalizeEmail()
-
-        //         const errors = validationResult(req);
-        // console.log(errors)
-        // return
-        // if (!errors.isEmpty()) {
-        //     return res.status(400).json({ errors: errors.array() });
-        // }
-
+        
         const entityManager = getManager()
         let userData = {
             FirstName: req.body.FirstName,
@@ -89,22 +76,26 @@ const authLogin = async (req: Request, res: Response) => {
 
     const entityManager = getRepository(User)
     //fetching Data
-    console.log(req.params)
+    console.log(req.query)
+    const { UserName } = req.query
+    const { Password } = req.query
     // return
     let data = await entityManager.findOne(
         {
             where: {
-                UserName: req.params.UserName,
-                Password: req.params.Password
+                UserName: `${UserName}`,
+                Password: `${Password}`
             }
         }).catch(err => console.log("error is here: ", err))
     if (data !== null) {
-        res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+        //  return res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
         res.json({
             test: "ok",
             data: data
         })
-    }
+    } res.json({
+        message: "invalid username or password."
+    })
 }
 const userLogin = async (req: Request, res: Response) => {
     console.log(req.params)
