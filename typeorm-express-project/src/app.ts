@@ -18,7 +18,7 @@ var jwtCheck = jwt({
         jwksRequestsPerMinute: 5,
         jwksUri: 'https://dev-iu1gyvsf.us.auth0.com/.well-known/jwks.json'
   }),
-  audience: 'http://localhost:4001',
+  audience: 'https://dev-iu1gyvsf.us.auth0.com/api/v2/',
   issuer: 'https://dev-iu1gyvsf.us.auth0.com/',
   algorithms: ['RS256']
 });
