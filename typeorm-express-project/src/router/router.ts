@@ -37,7 +37,7 @@ router.post('/user', [
 ]
     , addUser)
 
-router.get('/user', jwtCheck, allUser)
+router.get('/user', allUser)
 
 router.put('/user', updateUser)
 

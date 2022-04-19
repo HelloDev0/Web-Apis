@@ -25,7 +25,7 @@ var jwtCheck = jwt({
 
 const app = express()
 
-const port = 4001;
+// const port = 4001;
 // app.use(morgan("dev"));
 // app.use(helmet());
 app.use(bodyParser.json())
@@ -43,4 +43,4 @@ createConnection()
     })
     .catch(err => console.log(err))
 
-export {app,port}
+export {app}
