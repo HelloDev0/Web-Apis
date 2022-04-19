@@ -19,7 +19,6 @@ const addBlogs = async (req: Request, res: Response) => {
     let data = await entityManager.save(userData)
 
     res.json({
-        test: "ok",
         data: data
     })
 }
@@ -31,7 +30,6 @@ const allBlogs = async (req: Request, res: Response) => {
     let data = await entityManager.find({ relations:['user'] })
 
     res.json({
-        test: "ok",
         data: data
     })
 }

@@ -18,7 +18,7 @@ const addUser = async(req: Request, res: Response) => {
         const entityManager = getRepository(User)
         let uniqueUser=await entityManager.findOneBy({Email:req.body.Email})
         if(uniqueUser){
-            res.status(401).json({message:"User already registered with same email id. So please try with another."})
+            return res.status(401).json({message:"User already registered with same email id. So please try with another."})
         }
         let userData = {
             FirstName: req.body.FirstName,
@@ -32,7 +32,7 @@ const addUser = async(req: Request, res: Response) => {
         let data = await entityManager.save( userData)
 
         res.json({
-            test: "ok",
+            // test: "ok",
             data: data
         })
 
@@ -45,7 +45,6 @@ const allUser = async (req: Request, res: Response) => {
     let data = await entityManager.find(User,{ relations:['blogs'] })
 
     res.json({
-        test: "ok",
         data: data
     })
 }

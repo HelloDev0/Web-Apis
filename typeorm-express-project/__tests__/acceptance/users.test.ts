@@ -6,30 +6,52 @@ import { port } from "../../src/config";
 
 let connection, server;
 
-const testUser = {
-    "FirstName": "debiprasad",
-    "LastName": "behera",
-    "MobileNo": "789497757",
-    "Email": "dpdash@gmail.com",
-    "UserName": "prasant",
-    "Password": "Dev0379"
-  };
+let testUser = {
+  "FirstName": "debiprasad",
+  "LastName": "behera",
+  "MobileNo": "7894977757",
+  "Email": "dpdash2@gmail.com",
+  "UserName": "prasant",
+  "Password": "Dev0379",
+};
 
 beforeEach(async () => {
-    connection = await createConnection();
-    await connection.synchronize();
-    server = app.listen(port);
+  connection = await createConnection();
+  await connection.synchronize();
+  server = app.listen(port);
 
 })
 
-afterEach(async()=>{
-connection.close();
-server.close();
+afterEach(async () => {
+  connection.close();
+  server.close();
 })
 
 
-it('should be no users initially', async() => {
-    const response = await request(app).get('/user');
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual([]);
-  });
+// it('should be no users initially', async () => {
+//   const response = await request(app).get('/user');
+//   expect(response.statusCode).toBe(200);
+//   expect(response.body).toEqual({ data: [] });
+// });
+
+it('should be no blogs initially', async () => {
+  const response = await request(app).get('/blogs');
+  expect(response.statusCode).toBe(200);
+  expect(response.body).toEqual({ data: [] });
+});
+
+// it('should create a user', async () => {
+//   const response = await request(app).post('/user').send(testUser);
+//   expect(response.statusCode).toBe(200);
+//   expect(response.body).toEqual({
+//     data: {
+//       "FirstName": "debiprasad",
+//       "LastName": "behera",
+//       "MobileNo": "7894977757",
+//       "Email": "dpdash2@gmail.com",
+//       "UserName": "prasant",
+//       "Password": "Dev0379",
+//       "id": 1
+//     }
+//   });
+// });
