@@ -28,5 +28,5 @@ export class User {
     @OneToMany(()=>Blog,(blog)=>blog.user,{
         cascade:true
     })
-    blogs: Promise<Blog[]>;
+    blogs: Blog[];
 }

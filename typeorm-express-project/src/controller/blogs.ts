@@ -1,17 +1,22 @@
 import { Request, Response, NextFunction } from 'express'
+import { validationResult } from 'express-validator';
 import { getManager, getRepository, } from 'typeorm'
 import { Blog } from '../entity/Blog';
 import { User } from '../entity/User';
 const addBlogs = async (req: Request, res: Response) => {
-
-    const entityManager = getManager()
+    
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({send:errors.array()})
+    }
+    const entityManager = getRepository(Blog)
     let userData = {
         Subject: req.body.Subject,
         Content: req.body.Content,
         Blog_Created_Date: req.body.Blog_Created_Date,
-        user: Promise.resolve(User)
+        user: req.body.user
     }
-    let data = await entityManager.insert(Blog, userData)
+    let data = await entityManager.save(userData)
 
     res.json({
         test: "ok",
@@ -23,7 +28,7 @@ const allBlogs = async (req: Request, res: Response) => {
 
     const entityManager = getRepository(Blog)
     //fetching Data
-    let data = await entityManager.find()
+    let data = await entityManager.find({ relations:['user'] })
 
     res.json({
         test: "ok",

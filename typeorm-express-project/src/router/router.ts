@@ -1,4 +1,5 @@
 import * as express from "express";
+import { body, check } from "express-validator";
 import { addBlogs, allBlogs, deleteBlogs, updateBlogs } from "../controller/blogs";
 import { addUser, allUser, deleteUser, updateUser, userLogin, authLogin } from "../controller/user";
 // import { auth } from 'express-openid-connect';
@@ -13,15 +14,28 @@ var jwtCheck = jwt({
         rateLimit: true,
         jwksRequestsPerMinute: 5,
         jwksUri: 'https://dev-iu1gyvsf.us.auth0.com/.well-known/jwks.json'
-  }),
-  audience: 'https://dev-iu1gyvsf.us.auth0.com/api/v2/',
-  issuer: 'https://dev-iu1gyvsf.us.auth0.com/',
-  algorithms: ['RS256']
+    }),
+    audience: 'https://dev-iu1gyvsf.us.auth0.com/api/v2/',
+    issuer: 'https://dev-iu1gyvsf.us.auth0.com/',
+    algorithms: ['RS256']
 });
 
 const router = express.Router()
 // routes start here
-router.post('/user', addUser)
+router.post('/user', [
+    body('Email').isEmail().normalizeEmail(),
+    body('UserName').not().isEmpty(),
+    body('FirstName').not().isEmpty(),
+    body('LastName').not().isEmpty(),
+    body('MobileNo').not().isEmpty().isLength({ min: 10 }),
+    check('Password', 'The password must be 5+ chars long and contain a number')
+        .not()
+        .isIn(['123', 'password', 'god'])
+        .withMessage('Do not use a common word as the password')
+        .isLength({ min: 5 })
+        .matches(/\d/)
+]
+    , addUser)
 
 router.get('/user', jwtCheck, allUser)
 
@@ -54,7 +68,7 @@ router.get('/authorized', (req: express.Request, res: express.Response) => {
     axios(config)
         .then(function (response) {
             // console.log(JSON.stringify(response.data));
-            return res.json({token:response.data})
+            return res.json({ token: response.data })
         })
         .catch(function (error) {
             console.log(error);
@@ -68,7 +82,13 @@ router.get('/logout', authLogin)
 
 // blogs routes
 
-router.post('/blogs',  addBlogs)
+router.post('/blogs', [
+    body('Subject').not().isEmpty(),
+    body('Content').not().isEmpty(),
+    body('Blog_Created_Date').not().isEmpty(),
+    body('user').not().isEmpty()
+],
+    addBlogs)
 
 router.get('/blogs', allBlogs)
 

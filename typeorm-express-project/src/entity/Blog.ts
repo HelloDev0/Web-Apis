@@ -17,5 +17,5 @@ export class Blog {
     Blog_Created_Date: string
 
     @ManyToOne(()=>User,(user)=>user.blogs)
-    user:Promise<User>;
+    user:User;
 }
