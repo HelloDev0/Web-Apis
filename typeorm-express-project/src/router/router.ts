@@ -86,7 +86,7 @@ router.post('/blogs', [
     body('Subject').not().isEmpty(),
     body('Content').not().isEmpty(),
     body('Blog_Created_Date').not().isEmpty(),
-    body('user').not().isEmpty()
+    // body('user').not().isEmpty()
 ],
     addBlogs)
 

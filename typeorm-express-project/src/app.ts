@@ -37,10 +37,10 @@ app.use(express.static("public"))
 
 app.use('/', router)
 
-createConnection()
-    .then(async (connection) => {
+// createConnection()
+//     .then( (connection) => {
 
-    })
-    .catch(err => console.log(err))
+//     })
+//     .catch(err => console.log(err))
 
 export {app}
