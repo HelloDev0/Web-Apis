@@ -18,9 +18,10 @@ const addUser = async (req: Request, res: Response) => {
         return res.status(400).json({ send: errors.array() })
     }
     const entityManager = getRepository(User)
-    let uniqueUser = await entityManager.findOneBy({ Email: req.body.Email })
-    if (uniqueUser) {
-        return res.status(401).json({ message: "User already registered with same email id. So please try with another." })
+    let uniqueEmail = await entityManager.findOneBy({ Email: req.body.Email })
+    let uniqueUser = await entityManager.findOneBy({ UserName: req.body.UserName })
+    if (uniqueEmail || uniqueUser) {
+        return res.status(401).json({ message: "User already registered with same email id or username. So please try with another." })
     }
     let userData = {
         FirstName: req.body.FirstName,
@@ -120,7 +121,7 @@ const authLogin = async (req: Request, res: Response) => {
             data: Clientdata
         };
 
-       await axios(config)
+        await axios(config)
             .then(function (response) {
                 return res.json(
                     {
