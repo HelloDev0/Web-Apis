@@ -11,17 +11,17 @@ import { auth } from 'express-openid-connect';
 var jwt = require('express-jwt');
 var jwks = require('jwks-rsa');
 
-var jwtCheck = jwt({
-    secret: jwks.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: 'https://dev-iu1gyvsf.us.auth0.com/.well-known/jwks.json'
-  }),
-  audience: 'https://dev-iu1gyvsf.us.auth0.com/api/v2/',
-  issuer: 'https://dev-iu1gyvsf.us.auth0.com/',
-  algorithms: ['RS256']
-});
+// var jwtCheck = jwt({
+//     secret: jwks.expressJwtSecret({
+//         cache: true,
+//         rateLimit: true,
+//         jwksRequestsPerMinute: 5,
+//         jwksUri: 'https://dev-iu1gyvsf.us.auth0.com/.well-known/jwks.json'
+//   }),
+//   audience: 'https://dev-iu1gyvsf.us.auth0.com/api/v2/',
+//   issuer: 'https://dev-iu1gyvsf.us.auth0.com/',
+//   algorithms: ['RS256']
+// });
 
 const app = express()
 
@@ -36,11 +36,5 @@ app.use(express.static("public"))
 
 
 app.use('/', router)
-
-// createConnection()
-//     .then( (connection) => {
-
-//     })
-//     .catch(err => console.log(err))
 
 export {app}
